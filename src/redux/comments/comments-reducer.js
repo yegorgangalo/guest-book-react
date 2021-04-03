@@ -1,14 +1,12 @@
 import { createReducer, combineReducers} from '@reduxjs/toolkit';
 import * as operations from './comments-operations';
 
-const { fetchComments, addComment, deleteComment, patchComment } = operations;
+const { fetchComments, addComment } = operations;
 
 /* ---------------FULLFILLED_REDUCER---------------------- */
 const comments = createReducer([], {
     [addComment.fulfilled]: (state, { payload }) => [...state, payload],
     [fetchComments.fulfilled]: (_, { payload }) => payload,
-    [deleteComment.fulfilled]: (state, { payload }) => state.filter(({ id }) => id !== payload),
-    [patchComment.fulfilled]: (state, { payload }) => state.map(comment => comment.id === payload.id ? payload : comment),
 });
 
 /* ---------------LOAD_REDUCER---------------------- */

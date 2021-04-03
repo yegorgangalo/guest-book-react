@@ -8,8 +8,8 @@ const CommentList = function () {
     return (
         <ul className={styles.commentList} >
             {comments.length>0
-                ? comments.map(({ name, comment }) => (
-                <CommentItem key={comment} name={name} comment={comment} />
+                ? comments.map(({ _id, name, comment }) => (
+                <CommentItem key={_id} name={name} comment={comment} />
                 ))
                 : <li className={styles.noComments}>No Comments</li>
             }
