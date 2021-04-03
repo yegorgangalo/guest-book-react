@@ -1,25 +1,54 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchComments } from 'redux/comments/comments-operations';
+import { getLoading, getError } from 'redux/comments/comments-selectors';
+import { Button } from '@material-ui/core';
+import { IoClose } from 'react-icons/io5';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import CommentList from 'components/CommentList';
+import Modal from 'components/Modal';
+import Form from 'components/Form';
+import IconButton from 'components/IconButton';
+import Spinner from 'components/Spinner';
+import styles from './App.module.css';
+
 
 function App() {
+  const [modal, setModal] = useState(false);
+  const dispatch = useDispatch();
+  const loading = useSelector(getLoading);
+  const error = useSelector(getError);
+
+  useEffect(() => {
+    dispatch(fetchComments());
+  }, [dispatch])
+
+  const toggleModal = () => {
+    return setModal(!modal);
+  }
+
+  const notify = (val) => {
+    toast(val);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className={styles.mainContainer} >
+      <h1>Our visitor's comments</h1>
+      <CommentList />
+      {loading && <Spinner />}
+      {error && notify(error)}
+      <Button type="button" color="primary" variant="contained" onClick={toggleModal}>Leave Comment</Button>
+      {modal &&
+        <Modal toggleModal={toggleModal}>
+        <Form toggleModal={toggleModal}/>
+          <IconButton onClick={toggleModal} aria-label="Close Modal" classNames={styles.iconButtonCloseModal}>
+            <IoClose/>
+          </IconButton>
+        </Modal>}
+      <ToastContainer autoClose={3000}/>
     </div>
-  );
+  )
 }
 
 export default App;

@@ -1,0 +1,15 @@
+.name,
+.comment {
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 20px !important;
+}
+
+.submitBtn {
+  display: block !important;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 30px;
+  padding-right: 30px;
+  margin: 0 auto !important;
+}
