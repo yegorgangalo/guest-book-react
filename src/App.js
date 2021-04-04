@@ -6,6 +6,7 @@ import { Button } from '@material-ui/core';
 import { IoClose } from 'react-icons/io5';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Context from 'components/Context';
 import CommentList from 'components/CommentList';
 import Modal from 'components/Modal';
 import Form from 'components/Form';
@@ -35,7 +36,9 @@ function App() {
   return (
     <div className={styles.mainContainer} >
       <h1>Our visitor's comments</h1>
-      <CommentList />
+      <Context.Provider value={{toggleModal}}>
+        <CommentList />
+      </Context.Provider>
       {loading && <Spinner />}
       {error && notify(error)}
       <Button type="button" color="primary" variant="contained" onClick={toggleModal}>Leave Comment</Button>

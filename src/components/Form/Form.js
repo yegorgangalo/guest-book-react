@@ -1,69 +1,77 @@
 import { useEffect, useState } from 'react';
 import { Button, TextField } from '@material-ui/core';
-import { useForm, Controller } from "react-hook-form";
-import { useDispatch } from 'react-redux';
-import { addComment } from 'redux/comments/comments-operations';
+import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from 'react-redux';
+import { getEdit } from 'redux/comments/comments-selectors';
+import { addComment, patchComment } from 'redux/comments/comments-operations';
+import {editComment} from 'redux/comments/comments-actions';
 import styles from './Form.module.css';
 
 export default function Form({ toggleModal }) {
     const dispatch = useDispatch();
-    const dispatchAsyncComment = (value) => dispatch(addComment(value));
-    const { handleSubmit, reset, control } = useForm();
+    const editInfo = useSelector(getEdit);
+    const { handleSubmit, reset } = useForm();
 
     const [name, setName] = useState('');
+    const [comment, setComment] = useState('');
 
     useEffect(() => {
+        if (editInfo) {
+            setName(editInfo.name);
+            setComment(editInfo.comment);
+            return () => {
+                dispatch(editComment(null));
+            }
+        }
         const nameLS = localStorage.getItem('name');
         nameLS && setName(nameLS);
-    }, [])
+    }, [editInfo, dispatch])
 
-    const formSubmit = (data) => {
+    const formSubmit = () => {
         localStorage.setItem('name', name)
-        const formData = { ...data, name };
-        dispatchAsyncComment(formData);
+        if (editInfo) {
+            const formData = { _id: editInfo._id, name, comment };
+            dispatch(patchComment(formData));
+            toggleModal();
+            reset();
+            return;
+        }
+        const formData = {name, comment};
+        dispatch(addComment(formData));
         toggleModal();
         reset();
     }
 
-    const handleChange = ({target}) => {
+    const handleNameChange = ({target}) => {
         setName(target.value);
+    };
+    const handleCommentChange = ({target}) => {
+        setComment(target.value);
     };
 
     return (
         <form className={styles.blockForm} autoComplete="on" onSubmit={handleSubmit(formSubmit)}>
-            <Controller
-                name="name"
-                control={control}
-                defaultValue=""
-                render={({field}) =>
-                    <TextField
-                        {...field}
-                        value={name}
-                        onChange={handleChange}
-                        rowsMax={1}
-                        label="Your Name"
-                        placeholder="Antonio"
-                        multiline
-                        variant="outlined"
-                        className={styles.name}
-                        autoFocus
-                    />}
+            <TextField
+                value={name}
+                onChange={handleNameChange}
+                rowsMax={1}
+                label="Your Name"
+                placeholder="Antonio"
+                multiline
+                variant="outlined"
+                className={styles.name}
+                autoFocus
             />
-            <Controller
-                name="comment"
-                control={control}
-                defaultValue=""
-                render={({field}) =>
-                    <TextField
-                        {...field}
-                        rows={5}
-                        rowsMax={10}
-                        label="Your comment"
-                        placeholder="I like your service very much!"
-                        multiline
-                        variant="outlined"
-                        className={styles.comment}
-                    />}
+            <TextField
+                value={comment}
+                onChange={handleCommentChange}
+                rows={5}
+                rowsMax={10}
+                label="Your comment"
+                placeholder="I like your service very much!"
+                multiline
+                variant="outlined"
+                className={styles.comment}
             />
             <Button type="submit" color="primary" variant="contained" className={styles.submitBtn} >Add</Button>
         </form>

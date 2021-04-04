@@ -1,4 +1,5 @@
 .commentBlock {
+  position: relative;
   margin-bottom: 10px;
   padding: 10px;
   background-color: rgb(225, 228, 255);
@@ -11,4 +12,39 @@
 
 .comment {
   font-style: italic;
+}
+
+.positionOfBtns {
+  position: absolute;
+  right: 6px;
+  top: 14px;
+  transform: translateY(-50%);
+}
+
+.colorBtn {
+  position: relative;
+  padding: 2px;
+  color: rgb(88, 88, 88);
+  fill: rgb(88, 88, 88);
+}
+
+.colorBtn svg {
+  height: 0.8em;
+  width: 0.8em;
+}
+
+.colorBtn:not(:last-child) {
+  margin-right: 4px;
+}
+
+.colorBtn:hover,
+.colorBtn:focus {
+  color: rgb(160, 36, 36);
+  fill: rgb(160, 36, 36);
+}
+
+.spinner {
+  top: 0px;
+  left: -8px;
+  fill: inherit;
 }
