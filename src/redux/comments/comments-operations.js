@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-// axios.defaults.baseURL = 'https://guest-book-server.herokuapp.com';
-axios.defaults.baseURL = 'http://localhost:3003';
+axios.defaults.baseURL = 'https://guest-book-server.herokuapp.com';
+// axios.defaults.baseURL = 'http://localhost:3003';
 
 export const fetchComments = createAsyncThunk(
     'comments/fetch',
