@@ -9,28 +9,28 @@ import styles from './Form.module.css';
 
 export default function Form({ toggleModal }) {
     const dispatch = useDispatch();
-    const editInfo = useSelector(getEdit);
+    const editCommentInfo = useSelector(getEdit);
     const { handleSubmit, reset } = useForm();
 
     const [name, setName] = useState('');
     const [comment, setComment] = useState('');
 
     useEffect(() => {
-        if (editInfo) {
-            setName(editInfo.name);
-            setComment(editInfo.comment);
+        if (editCommentInfo) {
+            setName(editCommentInfo.name);
+            setComment(editCommentInfo.comment);
             return () => {
                 dispatch(editComment(null));
             }
         }
         const nameLS = localStorage.getItem('name');
         nameLS && setName(nameLS);
-    }, [editInfo, dispatch])
+    }, [editCommentInfo, dispatch])
 
     const formSubmit = () => {
         localStorage.setItem('name', name)
-        if (editInfo) {
-            const formData = { _id: editInfo._id, name, comment };
+        if (editCommentInfo) {
+            const formData = { _id: editCommentInfo._id, name, comment };
             dispatch(patchComment(formData));
             toggleModal();
             reset();
@@ -44,10 +44,11 @@ export default function Form({ toggleModal }) {
 
     const handleNameChange = ({target}) => {
         setName(target.value);
-    };
+    }
+
     const handleCommentChange = ({target}) => {
         setComment(target.value);
-    };
+    }
 
     return (
         <form className={styles.blockForm} autoComplete="on" onSubmit={handleSubmit(formSubmit)}>
