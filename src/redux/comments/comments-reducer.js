@@ -1,6 +1,6 @@
 import { createReducer, combineReducers} from '@reduxjs/toolkit';
 import * as operations from './comments-operations';
-import {editComment} from './comments-actions';
+import {editComment, resetCommentsError} from './comments-actions';
 
 const { fetchComments, addComment, deleteComment, patchComment } = operations;
 
@@ -42,7 +42,9 @@ const reducerErrorObj = Object.values(operations)
             ...accObj,
             [operation.rejected]: setError,
             [operation.pending]: resetError
-        }), {});
+        }), {[resetCommentsError]:resetError,});
+
+console.log(reducerErrorObj);
 const error = createReducer(null, reducerErrorObj);
 
 /* ---------------------------------------------------- */

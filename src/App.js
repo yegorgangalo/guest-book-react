@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchComments } from 'redux/comments/comments-operations';
+import { resetCommentsError } from 'redux/comments/comments-actions';
 import { getLoading, getError } from 'redux/comments/comments-selectors';
 import { Button } from '@material-ui/core';
 import { IoClose } from 'react-icons/io5';
@@ -26,7 +27,8 @@ function App() {
   }, [dispatch])
 
   const toggleModal = () => {
-    return setModal(!modal);
+    error && dispatch(resetCommentsError())
+    setModal(!modal);
   }
 
   const notify = (val) => {
