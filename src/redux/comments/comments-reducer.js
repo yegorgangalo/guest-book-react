@@ -44,7 +44,6 @@ const reducerErrorObj = Object.values(operations)
             [operation.pending]: resetError
         }), {[resetCommentsError]:resetError,});
 
-console.log(reducerErrorObj);
 const error = createReducer(null, reducerErrorObj);
 
 /* ---------------------------------------------------- */
