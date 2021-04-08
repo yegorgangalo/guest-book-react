@@ -6,8 +6,8 @@ import { MdDelete } from 'react-icons/md';
 import {deleteComment} from 'redux/comments/comments-operations';
 import {editComment} from 'redux/comments/comments-actions';
 import {getLoading, getComments} from 'redux/comments/comments-selectors';
-import IconButton from 'components/IconButton';
 import Spinner from 'components/Spinner';
+import IconButton from 'components/IconButton';
 import styles from './CommentItem.module.css'
 
 const CommentItem = function ({ _id, name, comment }) {
