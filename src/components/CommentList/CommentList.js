@@ -1,19 +1,38 @@
-import { useRecoilValue } from 'recoil';
-import { commentsState } from 'state/commentsAtom';
+import { useQuery } from 'react-query';
+import { getAllCommentsAPI } from '../../state/API';
 import CommentItem from 'components/CommentItem';
+import Spinner from 'components/Spinner';
+import { toast } from 'react-toastify';
 import styles from './CommentList.module.css';
 
 const CommentList = function () {
-  const comments = useRecoilValue(commentsState);
+  const { data: comments, error, isLoading } = useQuery(
+    'CommentsData',
+    getAllCommentsAPI,
+  );
+
+  const notify = val => {
+    toast(val);
+  };
+
+  if (isLoading)
+    return (
+      <>
+        <div>Loading...</div>
+        <Spinner />
+      </>
+    );
+
   return (
     <ul className={styles.commentList}>
-      {comments.length > 0 ? (
+      {comments?.length > 0 ? (
         comments.map(({ _id, name, comment }) => (
           <CommentItem key={_id} _id={_id} name={name} comment={comment} />
         ))
       ) : (
         <li className={styles.noComments}>No Comments</li>
       )}
+      {error && notify(error.message)}
     </ul>
   );
 };

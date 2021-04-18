@@ -2,7 +2,7 @@ import axios from 'axios';
 axios.defaults.baseURL = 'https://guest-book-server.herokuapp.com';
 
 export async function getAllCommentsAPI() {
-  const { data } = await axios.get('/api/comments');
+  const { data } = await axios.get('/api/comments1');
   return data;
 }
 

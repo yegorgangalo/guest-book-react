@@ -1,12 +1,7 @@
+import { useMutation, useQueryClient } from 'react-query';
 import { deleteCommentAPI } from 'state/API';
-import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil';
-import {
-  commentsState,
-  commentEditState,
-  isOpenedModalState,
-  toggleIsOpenedModalState,
-} from 'state';
-import { useState, useEffect } from 'react';
+import { useSetRecoilState } from 'recoil';
+import { commentEditState, toggleIsOpenedModalState } from 'state';
 import { FaRegEdit } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
 import Spinner from 'components/Spinner';
@@ -14,35 +9,21 @@ import IconButton from 'components/IconButton';
 import styles from './CommentItem.module.css';
 
 const CommentItem = function ({ _id, name, comment }) {
-  const modal = useRecoilValue(isOpenedModalState);
+  const queryClient = useQueryClient();
+  const { mutateAsync, isLoading } = useMutation(deleteCommentAPI);
+
   const toggleModal = useSetRecoilState(toggleIsOpenedModalState);
   const setCommentEditInfo = useSetRecoilState(commentEditState);
-  const [comments, setComments] = useRecoilState(commentsState);
-  const [isEdit, setIsEdit] = useState(false);
-
-  useEffect(() => {
-    setIsEdit(false);
-  }, [comments]);
-
-  useEffect(() => {
-    !modal && setIsEdit(false);
-  }, [modal]);
 
   const openEditModal = () => {
     toggleModal();
     const commentInfo = { _id, name, comment };
     setCommentEditInfo(commentInfo);
-    setIsEdit(true);
   };
 
   const deleteCommentById = async () => {
-    try {
-      setIsEdit(true);
-      await deleteCommentAPI(_id);
-      setComments(state => state.filter(comment => comment._id !== _id));
-    } catch (err) {
-      console.log(err.toJSON());
-    }
+    await mutateAsync(_id);
+    queryClient.invalidateQueries('CommentsData');
   };
 
   return (
@@ -50,7 +31,7 @@ const CommentItem = function ({ _id, name, comment }) {
       <p className={styles.name}>{name}:</p>
       <p className={styles.comment}>{comment}</p>
       <span className={styles.positionOfBtns}>
-        {isEdit ? (
+        {isLoading ? (
           <IconButton aria-label="Loading" classNames={styles.colorBtn}>
             <Spinner classNames={styles.spinner} />
           </IconButton>
