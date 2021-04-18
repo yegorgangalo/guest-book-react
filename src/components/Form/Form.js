@@ -1,10 +1,10 @@
 import { useSetRecoilState, useRecoilState } from 'recoil';
 import {
   toggleIsOpenedModalState,
-  commentsState,
   commentEditState,
+  useAddComment,
+  usePatchComment,
 } from 'state';
-import { postCommentAPI, patchCommentAPI } from 'state/API';
 import { useEffect, useState } from 'react';
 import { Button, TextField } from '@material-ui/core';
 import { useForm } from 'react-hook-form';
@@ -12,11 +12,12 @@ import styles from './Form.module.css';
 
 export default function Form() {
   const toggleModal = useSetRecoilState(toggleIsOpenedModalState);
-  const setComments = useSetRecoilState(commentsState);
   const [editCommentInfo, setEditCommentInfo] = useRecoilState(
     commentEditState,
   );
   const { handleSubmit, reset } = useForm();
+  const addComment = useAddComment(); //
+  const patchComment = usePatchComment(); //
 
   const [name, setName] = useState('');
   const [comment, setComment] = useState('');
@@ -36,19 +37,9 @@ export default function Form() {
   const formSubmit = async () => {
     try {
       localStorage.setItem('name', name);
-      if (editCommentInfo) {
-        const data = await patchCommentAPI({
-          _id: editCommentInfo._id,
-          name,
-          comment,
-        });
-        setComments(state =>
-          state.map(comment => (comment._id === data._id ? data : comment)),
-        );
-      } else {
-        const data = await postCommentAPI({ name, comment });
-        setComments(state => state.concat(data));
-      }
+      editCommentInfo
+        ? patchComment.execute({ _id: editCommentInfo._id, name, comment })
+        : addComment.execute({ name, comment });
       toggleModal();
       reset();
     } catch (error) {

@@ -1,10 +1,10 @@
-import { deleteCommentAPI } from 'state/API';
-import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil';
+import { useSetRecoilState, useRecoilValue } from 'recoil';
 import {
   commentsState,
   commentEditState,
   isOpenedModalState,
   toggleIsOpenedModalState,
+  useRemoveComment,
 } from 'state';
 import { useState, useEffect } from 'react';
 import { FaRegEdit } from 'react-icons/fa';
@@ -17,7 +17,8 @@ const CommentItem = function ({ _id, name, comment }) {
   const modal = useRecoilValue(isOpenedModalState);
   const toggleModal = useSetRecoilState(toggleIsOpenedModalState);
   const setCommentEditInfo = useSetRecoilState(commentEditState);
-  const [comments, setComments] = useRecoilState(commentsState);
+  const comments = useRecoilValue(commentsState);
+  const removeComment = useRemoveComment();
   const [isEdit, setIsEdit] = useState(false);
 
   useEffect(() => {
@@ -38,8 +39,7 @@ const CommentItem = function ({ _id, name, comment }) {
   const deleteCommentById = async () => {
     try {
       setIsEdit(true);
-      await deleteCommentAPI(_id);
-      setComments(state => state.filter(comment => comment._id !== _id));
+      await removeComment.execute(_id);
     } catch (err) {
       console.log(err.toJSON());
     }

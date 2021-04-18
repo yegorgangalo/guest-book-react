@@ -5,6 +5,7 @@ import styles from './CommentList.module.css';
 
 const CommentList = function () {
   const comments = useRecoilValue(commentsState);
+
   return (
     <ul className={styles.commentList}>
       {comments.length > 0 ? (
