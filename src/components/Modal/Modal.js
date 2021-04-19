@@ -1,5 +1,5 @@
 import { useSetRecoilState } from 'recoil';
-import { toggleIsOpenedModalState } from 'state';
+import { toggleIsOpenedModalState } from 'state/atoms';
 import { useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import styles from './Modal.module.css';

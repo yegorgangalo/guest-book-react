@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from 'react-query';
 import { useSetRecoilState, useRecoilState } from 'recoil';
-import { toggleIsOpenedModalState, commentEditState } from 'state';
+import { toggleIsOpenedModalState, commentEditState } from 'state/atoms';
 import { postCommentAPI, patchCommentAPI } from 'state/API';
 import { useEffect, useState } from 'react';
 import { Button, TextField } from '@material-ui/core';

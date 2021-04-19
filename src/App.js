@@ -1,5 +1,5 @@
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { isOpenedModalState, toggleIsOpenedModalState } from 'state';
+import { isOpenedModalState, toggleIsOpenedModalState } from 'state/atoms';
 import { IoClose } from 'react-icons/io5';
 import { Button } from '@material-ui/core';
 import { ToastContainer } from 'react-toastify';

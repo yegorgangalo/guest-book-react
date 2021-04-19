@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from 'react-query';
 import { deleteCommentAPI } from 'state/API';
 import { useSetRecoilState } from 'recoil';
-import { commentEditState, toggleIsOpenedModalState } from 'state';
+import { commentEditState, toggleIsOpenedModalState } from 'state/atoms';
 import { FaRegEdit } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
 import Spinner from 'components/Spinner';
