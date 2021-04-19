@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { useSetRecoilState, useRecoilValue } from 'recoil';
 import { useRemoveComment } from 'state';
 import {
@@ -73,4 +74,4 @@ const CommentItem = function ({ _id, name, comment }) {
   );
 };
 
-export default CommentItem;
+export default memo(CommentItem);
