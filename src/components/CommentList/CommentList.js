@@ -1,5 +1,5 @@
 import { useQuery } from 'react-query';
-import { getAllCommentsAPI } from '../../state/API';
+import { getAllCommentsAPI } from 'state/API';
 import CommentItem from 'components/CommentItem';
 import Spinner from 'components/Spinner';
 import { toast } from 'react-toastify';

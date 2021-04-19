@@ -1,7 +1,12 @@
 import { useMutation, useQueryClient } from 'react-query';
 import { useSetRecoilState, useRecoilState } from 'recoil';
 import { toggleIsOpenedModalState, commentEditState } from 'state/atoms';
-import { postCommentAPI, patchCommentAPI } from 'state/API';
+import {
+  postCommentAPI,
+  patchCommentAPI,
+  commentsDataAdd,
+  commentsDataUpdate,
+} from 'state/API';
 import { useEffect, useState } from 'react';
 import { Button, TextField } from '@material-ui/core';
 import { useForm } from 'react-hook-form';
@@ -13,11 +18,17 @@ export default function Form() {
   const {
     mutateAsync: mutateAsyncPost,
     isLoading: isLoadingPost,
-  } = useMutation(postCommentAPI);
+  } = useMutation(postCommentAPI, {
+    onSuccess: data =>
+      queryClient.setQueryData('CommentsData', commentsDataAdd(data)),
+  });
   const {
     mutateAsync: mutateAsyncPatch,
     isLoading: isLoadingPatch,
-  } = useMutation(patchCommentAPI);
+  } = useMutation(patchCommentAPI, {
+    onSuccess: data =>
+      queryClient.setQueryData('CommentsData', commentsDataUpdate(data)),
+  });
 
   const toggleModal = useSetRecoilState(toggleIsOpenedModalState);
   const [editCommentInfo, setEditCommentInfo] = useRecoilState(
@@ -45,7 +56,7 @@ export default function Form() {
     editCommentInfo
       ? await mutateAsyncPatch({ _id: editCommentInfo._id, name, comment })
       : await mutateAsyncPost({ name, comment });
-    queryClient.invalidateQueries('CommentsData');
+    // queryClient.invalidateQueries('CommentsData');
     toggleModal();
     reset();
   };

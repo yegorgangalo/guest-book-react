@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from 'react-query';
-import { deleteCommentAPI } from 'state/API';
+import { deleteCommentAPI, commentsDataRemove } from 'state/API';
 import { useSetRecoilState } from 'recoil';
 import { commentEditState, toggleIsOpenedModalState } from 'state/atoms';
 import { FaRegEdit } from 'react-icons/fa';
@@ -10,7 +10,10 @@ import styles from './CommentItem.module.css';
 
 const CommentItem = function ({ _id, name, comment }) {
   const queryClient = useQueryClient();
-  const { mutateAsync, isLoading } = useMutation(deleteCommentAPI);
+  const { mutateAsync, isLoading } = useMutation(deleteCommentAPI, {
+    onSuccess: data =>
+      queryClient.setQueryData('CommentsData', commentsDataRemove(data)),
+  });
 
   const toggleModal = useSetRecoilState(toggleIsOpenedModalState);
   const setCommentEditInfo = useSetRecoilState(commentEditState);
@@ -23,7 +26,7 @@ const CommentItem = function ({ _id, name, comment }) {
 
   const deleteCommentById = async () => {
     await mutateAsync(_id);
-    queryClient.invalidateQueries('CommentsData');
+    // queryClient.invalidateQueries('CommentsData');
   };
 
   return (
