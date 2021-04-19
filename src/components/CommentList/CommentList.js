@@ -1,5 +1,5 @@
 import { useRecoilValue } from 'recoil';
-import { commentsState } from 'state/commentsAtom';
+import { commentsState } from 'state/commentsState';
 import CommentItem from 'components/CommentItem';
 import styles from './CommentList.module.css';
 

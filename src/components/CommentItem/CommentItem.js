@@ -1,5 +1,5 @@
-import { deleteCommentAPI } from 'state/API';
-import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil';
+import { useSetRecoilState, useRecoilValue } from 'recoil';
+import { useRemoveComment } from 'state';
 import {
   commentsState,
   commentEditState,
@@ -14,10 +14,11 @@ import IconButton from 'components/IconButton';
 import styles from './CommentItem.module.css';
 
 const CommentItem = function ({ _id, name, comment }) {
+  const removeComment = useRemoveComment();
   const modal = useRecoilValue(isOpenedModalState);
   const toggleModal = useSetRecoilState(toggleIsOpenedModalState);
   const setCommentEditInfo = useSetRecoilState(commentEditState);
-  const [comments, setComments] = useRecoilState(commentsState);
+  const comments = useRecoilValue(commentsState);
   const [isEdit, setIsEdit] = useState(false);
 
   useEffect(() => {
@@ -35,14 +36,9 @@ const CommentItem = function ({ _id, name, comment }) {
     setIsEdit(true);
   };
 
-  const deleteCommentById = async () => {
-    try {
-      setIsEdit(true);
-      await deleteCommentAPI(_id);
-      setComments(state => state.filter(comment => comment._id !== _id));
-    } catch (err) {
-      console.log(err.toJSON());
-    }
+  const deleteCommentById = () => {
+    setIsEdit(true);
+    removeComment(_id);
   };
 
   return (

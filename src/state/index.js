@@ -1,2 +1,2 @@
-export * from './commentsAtom';
+export * from './commentsState';
 export * from './openedModalState';
