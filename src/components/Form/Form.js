@@ -1,6 +1,4 @@
 import { useMutation, useQueryClient } from 'react-query';
-import { useSetRecoilState, useRecoilState } from 'recoil';
-import { toggleIsOpenedModalState, commentEditState } from 'state/atoms';
 import {
   postCommentAPI,
   patchCommentAPI,
@@ -30,10 +28,7 @@ export default function Form() {
       queryClient.setQueryData('CommentsData', commentsDataUpdate(data)),
   });
 
-  const toggleModal = useSetRecoilState(toggleIsOpenedModalState);
-  const [editCommentInfo, setEditCommentInfo] = useRecoilState(
-    commentEditState,
-  );
+  const editCommentInfo = queryClient.getQueryData('updateCommentInfo');
   const { handleSubmit, reset } = useForm();
 
   const [name, setName] = useState('');
@@ -44,20 +39,19 @@ export default function Form() {
       setName(editCommentInfo.name);
       setComment(editCommentInfo.comment);
       return () => {
-        setEditCommentInfo(null);
+        queryClient.setQueryData('updateCommentInfo', null);
       };
     }
     const nameLS = localStorage.getItem('name');
     nameLS && setName(nameLS);
-  }, [editCommentInfo, setEditCommentInfo]);
+  }, [editCommentInfo, queryClient]);
 
   const formSubmit = async () => {
     localStorage.setItem('name', name);
     editCommentInfo
       ? await mutateAsyncPatch({ _id: editCommentInfo._id, name, comment })
       : await mutateAsyncPost({ name, comment });
-    // queryClient.invalidateQueries('CommentsData');
-    toggleModal();
+    queryClient.setQueryData('isModalOpen', false);
     reset();
   };
 

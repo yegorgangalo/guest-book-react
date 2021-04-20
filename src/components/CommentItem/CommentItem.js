@@ -1,7 +1,5 @@
 import { useMutation, useQueryClient } from 'react-query';
 import { deleteCommentAPI, commentsDataRemove } from 'state/API';
-import { useSetRecoilState } from 'recoil';
-import { commentEditState, toggleIsOpenedModalState } from 'state/atoms';
 import { FaRegEdit } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
 import Spinner from 'components/Spinner';
@@ -15,18 +13,14 @@ const CommentItem = function ({ _id, name, comment }) {
       queryClient.setQueryData('CommentsData', commentsDataRemove(data)),
   });
 
-  const toggleModal = useSetRecoilState(toggleIsOpenedModalState);
-  const setCommentEditInfo = useSetRecoilState(commentEditState);
-
   const openEditModal = () => {
-    toggleModal();
+    queryClient.setQueryData('isModalOpen', true);
     const commentInfo = { _id, name, comment };
-    setCommentEditInfo(commentInfo);
+    queryClient.setQueryData('updateCommentInfo', commentInfo);
   };
 
   const deleteCommentById = async () => {
     await mutateAsync(_id);
-    // queryClient.invalidateQueries('CommentsData');
   };
 
   return (

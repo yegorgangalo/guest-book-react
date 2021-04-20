@@ -1,5 +1,4 @@
-import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { isOpenedModalState, toggleIsOpenedModalState } from 'state/atoms';
+import { useQuery, useQueryClient } from 'react-query';
 import { IoClose } from 'react-icons/io5';
 import { Button } from '@material-ui/core';
 import { ToastContainer } from 'react-toastify';
@@ -11,8 +10,12 @@ import IconButton from 'components/IconButton';
 import styles from './App.module.css';
 
 function App() {
-  const modal = useRecoilValue(isOpenedModalState);
-  const toggleModal = useSetRecoilState(toggleIsOpenedModalState);
+  const queryClient = useQueryClient();
+  const { data: isModalOpen } = useQuery('isModalOpen');
+
+  const toggleModal = () => {
+    queryClient.setQueryData('isModalOpen', !isModalOpen);
+  };
 
   return (
     <div className={styles.mainContainer}>
@@ -26,7 +29,7 @@ function App() {
       >
         Leave Comment
       </Button>
-      {modal && (
+      {isModalOpen && (
         <Modal>
           <Form />
           <IconButton

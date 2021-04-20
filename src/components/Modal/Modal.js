@@ -1,17 +1,15 @@
-import { useSetRecoilState } from 'recoil';
-import { toggleIsOpenedModalState } from 'state/atoms';
+import { useQueryClient } from 'react-query';
 import { useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import styles from './Modal.module.css';
 
 function Modal({ children }) {
-  const toggleModal = useSetRecoilState(toggleIsOpenedModalState);
-
+  const queryClient = useQueryClient();
   const onEscCloseModal = useCallback(
     ({ code }) => {
-      code === 'Escape' && toggleModal();
+      code === 'Escape' && queryClient.setQueryData('isModalOpen', false);
     },
-    [toggleModal],
+    [queryClient],
   );
 
   useEffect(() => {
@@ -20,7 +18,7 @@ function Modal({ children }) {
   }, [onEscCloseModal]);
 
   const onBackDropCloseModal = ({ target, currentTarget }) => {
-    target === currentTarget && toggleModal();
+    target === currentTarget && queryClient.setQueryData('isModalOpen', false);
   };
 
   return createPortal(
