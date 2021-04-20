@@ -2,16 +2,16 @@ import { useQuery, useQueryClient } from 'react-query';
 import { IoClose } from 'react-icons/io5';
 import { Button } from '@material-ui/core';
 import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import CommentList from 'components/CommentList';
 import Modal from 'components/Modal';
 import Form from 'components/Form';
 import IconButton from 'components/IconButton';
+import 'react-toastify/dist/ReactToastify.css';
 import styles from './App.module.css';
 
 function App() {
   const queryClient = useQueryClient();
-  const { data: isModalOpen } = useQuery('isModalOpen');
+  const { data: isModalOpen } = useQuery('isModalOpen', () => false);
 
   const toggleModal = () => {
     queryClient.setQueryData('isModalOpen', !isModalOpen);
