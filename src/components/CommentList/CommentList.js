@@ -1,5 +1,6 @@
 import { useQuery } from 'react-query';
-import { getAllCommentsAPI } from 'state/API';
+import { getAllCommentsAPI } from 'cacheUtils/API';
+import cache from 'cacheUtils/types';
 import CommentItem from 'components/CommentItem';
 import Spinner from 'components/Spinner';
 import { toast } from 'react-toastify';
@@ -7,7 +8,7 @@ import styles from './CommentList.module.css';
 
 const CommentList = function () {
   const { data: comments, error, isLoading } = useQuery(
-    'CommentsData',
+    cache.CommentsData,
     getAllCommentsAPI,
   );
 

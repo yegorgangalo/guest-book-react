@@ -1,5 +1,7 @@
 import { useMutation, useQueryClient } from 'react-query';
-import { deleteCommentAPI, commentsDataRemove } from 'state/API';
+import { deleteCommentAPI } from 'cacheUtils/API';
+import { commentsDataRemove } from 'cacheUtils/handlers';
+import cache from 'cacheUtils/types';
 import { FaRegEdit } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
 import Spinner from 'components/Spinner';
@@ -10,13 +12,13 @@ const CommentItem = function ({ _id, name, comment }) {
   const queryClient = useQueryClient();
   const { mutateAsync, isLoading } = useMutation(deleteCommentAPI, {
     onSuccess: data =>
-      queryClient.setQueryData('CommentsData', commentsDataRemove(data)),
+      queryClient.setQueryData(cache.CommentsData, commentsDataRemove(data)),
   });
 
   const openEditModal = () => {
-    queryClient.setQueryData('isModalOpen', true);
     const commentInfo = { _id, name, comment };
-    queryClient.setQueryData('updateCommentInfo', commentInfo);
+    queryClient.setQueryData(cache.updateCommentInfo, commentInfo);
+    queryClient.setQueryData(cache.isModalOpen, true);
   };
 
   const deleteCommentById = async () => {

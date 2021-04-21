@@ -1,10 +1,7 @@
 import { useMutation, useQueryClient } from 'react-query';
-import {
-  postCommentAPI,
-  patchCommentAPI,
-  commentsDataAdd,
-  commentsDataUpdate,
-} from 'state/API';
+import { postCommentAPI, patchCommentAPI } from 'cacheUtils/API';
+import { commentsDataAdd, commentsDataUpdate } from 'cacheUtils/handlers';
+import cache from 'cacheUtils/types';
 import { useEffect, useState } from 'react';
 import { Button, TextField } from '@material-ui/core';
 import { useForm } from 'react-hook-form';
@@ -18,17 +15,17 @@ export default function Form() {
     isLoading: isLoadingPost,
   } = useMutation(postCommentAPI, {
     onSuccess: data =>
-      queryClient.setQueryData('CommentsData', commentsDataAdd(data)),
+      queryClient.setQueryData(cache.CommentsData, commentsDataAdd(data)),
   });
   const {
     mutateAsync: mutateAsyncPatch,
     isLoading: isLoadingPatch,
   } = useMutation(patchCommentAPI, {
     onSuccess: data =>
-      queryClient.setQueryData('CommentsData', commentsDataUpdate(data)),
+      queryClient.setQueryData(cache.CommentsData, commentsDataUpdate(data)),
   });
 
-  const editCommentInfo = queryClient.getQueryData('updateCommentInfo');
+  const editCommentInfo = queryClient.getQueryData(cache.updateCommentInfo);
   const { handleSubmit, reset } = useForm();
 
   const [name, setName] = useState('');
@@ -39,7 +36,7 @@ export default function Form() {
       setName(editCommentInfo.name);
       setComment(editCommentInfo.comment);
       return () => {
-        queryClient.setQueryData('updateCommentInfo', null);
+        queryClient.setQueryData(cache.updateCommentInfo, null);
       };
     }
     const nameLS = localStorage.getItem('name');
@@ -51,7 +48,7 @@ export default function Form() {
     editCommentInfo
       ? await mutateAsyncPatch({ _id: editCommentInfo._id, name, comment })
       : await mutateAsyncPost({ name, comment });
-    queryClient.setQueryData('isModalOpen', false);
+    queryClient.setQueryData(cache.isModalOpen, false);
     reset();
   };
 

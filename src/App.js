@@ -1,4 +1,5 @@
 import { useQuery, useQueryClient } from 'react-query';
+import cache from 'cacheUtils/types';
 import { IoClose } from 'react-icons/io5';
 import { Button } from '@material-ui/core';
 import { ToastContainer } from 'react-toastify';
@@ -11,10 +12,10 @@ import styles from './App.module.css';
 
 function App() {
   const queryClient = useQueryClient();
-  const { data: isModalOpen } = useQuery('isModalOpen', () => false);
+  const { data: isModalOpen } = useQuery(cache.isModalOpen, () => false);
 
   const toggleModal = () => {
-    queryClient.setQueryData('isModalOpen', !isModalOpen);
+    queryClient.setQueryData(cache.isModalOpen, !isModalOpen);
   };
 
   return (
