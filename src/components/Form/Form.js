@@ -1,6 +1,8 @@
-import { useMutation, useQueryClient } from 'react-query';
-import { postCommentAPI, patchCommentAPI } from 'cacheUtils/API';
-import { commentsDataAdd, commentsDataUpdate } from 'cacheUtils/handlers';
+import { usePostComment, usePatchComment } from 'cacheUtils/hooks';
+import { useQueryClient } from 'react-query';
+// import { useMutation, useQueryClient } from 'react-query';
+// import { postCommentAPI, patchCommentAPI } from 'cacheUtils/API';
+// import { commentsDataAdd, commentsDataUpdate } from 'cacheUtils/handlers';
 import cache from 'cacheUtils/types';
 import { useEffect, useState } from 'react';
 import { Button, TextField } from '@material-ui/core';
@@ -10,20 +12,28 @@ import styles from './Form.module.css';
 
 export default function Form() {
   const queryClient = useQueryClient();
+  // const {
+  //   mutateAsync: mutateAsyncPost,
+  //   isLoading: isLoadingPost,
+  // } = useMutation(postCommentAPI, {
+  //   onSuccess: data =>
+  //     queryClient.setQueryData(cache.CommentsData, commentsDataAdd(data)),
+  // });
+  // const {
+  //   mutateAsync: mutateAsyncPatch,
+  //   isLoading: isLoadingPatch,
+  // } = useMutation(patchCommentAPI, {
+  //   onSuccess: data =>
+  //     queryClient.setQueryData(cache.CommentsData, commentsDataUpdate(data)),
+  // });
   const {
     mutateAsync: mutateAsyncPost,
     isLoading: isLoadingPost,
-  } = useMutation(postCommentAPI, {
-    onSuccess: data =>
-      queryClient.setQueryData(cache.CommentsData, commentsDataAdd(data)),
-  });
+  } = usePostComment();
   const {
     mutateAsync: mutateAsyncPatch,
     isLoading: isLoadingPatch,
-  } = useMutation(patchCommentAPI, {
-    onSuccess: data =>
-      queryClient.setQueryData(cache.CommentsData, commentsDataUpdate(data)),
-  });
+  } = usePatchComment();
 
   const editCommentInfo = queryClient.getQueryData(cache.updateCommentInfo);
   const { handleSubmit, reset } = useForm();

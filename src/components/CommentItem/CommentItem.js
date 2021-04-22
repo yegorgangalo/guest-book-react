@@ -1,6 +1,8 @@
-import { useMutation, useQueryClient } from 'react-query';
-import { deleteCommentAPI } from 'cacheUtils/API';
-import { commentsDataRemove } from 'cacheUtils/handlers';
+import { useQueryClient } from 'react-query';
+import { useDeleteComment } from 'cacheUtils/hooks';
+// import { useMutation, useQueryClient } from 'react-query';
+// import { deleteCommentAPI } from 'cacheUtils/API';
+// import { commentsDataRemove } from 'cacheUtils/handlers';
 import cache from 'cacheUtils/types';
 import { FaRegEdit } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
@@ -10,10 +12,11 @@ import styles from './CommentItem.module.css';
 
 const CommentItem = function ({ _id, name, comment }) {
   const queryClient = useQueryClient();
-  const { mutateAsync, isLoading } = useMutation(deleteCommentAPI, {
-    onSuccess: data =>
-      queryClient.setQueryData(cache.CommentsData, commentsDataRemove(data)),
-  });
+  // const { mutateAsync, isLoading } = useMutation(deleteCommentAPI, {
+  //   onSuccess: data =>
+  //     queryClient.setQueryData(cache.CommentsData, commentsDataRemove(data)),
+  // });
+  const { mutateAsync, isLoading } = useDeleteComment();
 
   const openEditModal = () => {
     const commentInfo = { _id, name, comment };
