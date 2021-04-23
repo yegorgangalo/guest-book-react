@@ -1,5 +1,5 @@
 import { useQueryClient } from 'react-query';
-import cache from 'cacheUtils/types';
+import { cache } from 'cache/react-query';
 import { useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import styles from './Modal.module.css';

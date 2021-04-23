@@ -1,16 +1,11 @@
-import { useQuery } from 'react-query';
-import { getAllCommentsAPI } from 'cacheUtils/API';
-import cache from 'cacheUtils/types';
+import { useGetAllComments } from 'cache/react-query';
 import CommentItem from 'components/CommentItem';
 import Spinner from 'components/Spinner';
 import { toast } from 'react-toastify';
 import styles from './CommentList.module.css';
 
 const CommentList = function () {
-  const { data: comments, error, isLoading } = useQuery(
-    cache.CommentsData,
-    getAllCommentsAPI,
-  );
+  const { data: comments, error, isLoading } = useGetAllComments();
 
   const notify = val => {
     toast(val);

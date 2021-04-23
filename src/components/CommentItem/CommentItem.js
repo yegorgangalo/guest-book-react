@@ -1,9 +1,9 @@
 import { useQueryClient } from 'react-query';
-import { useDeleteComment } from 'cacheUtils/hooks';
+import { useDeleteComment } from 'cache/react-query';
 // import { useMutation, useQueryClient } from 'react-query';
 // import { deleteCommentAPI } from 'cacheUtils/API';
 // import { commentsDataRemove } from 'cacheUtils/handlers';
-import cache from 'cacheUtils/types';
+import { cache } from 'cache/react-query';
 import { FaRegEdit } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
 import Spinner from 'components/Spinner';

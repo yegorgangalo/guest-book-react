@@ -1,5 +1,5 @@
 import { useQuery, useQueryClient } from 'react-query';
-import cache from 'cacheUtils/types';
+import { cache } from 'cache/react-query';
 import { IoClose } from 'react-icons/io5';
 import { Button } from '@material-ui/core';
 import { ToastContainer } from 'react-toastify';
