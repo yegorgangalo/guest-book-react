@@ -9,15 +9,11 @@ export const cache = {
 };
 
 //cache handlers
-const commentAddToCache = result => oldData => {
-  return oldData.concat(result);
-};
-const commentUpdateInCache = result => oldData => {
-  return oldData.map(item => (item._id === result._id ? result : item));
-};
-const commentDeleteFromCache = result => oldData => {
-  return oldData.filter(({ _id }) => _id !== result);
-};
+const commentAddToCache = result => oldData => oldData.concat(result);
+const commentUpdateInCache = result => oldData =>
+  oldData.map(item => (item._id === result._id ? result : item));
+const commentDeleteFromCache = result => oldData =>
+  oldData.filter(({ _id }) => _id !== result);
 
 //hooks
 const mutationQueryTemplate = (
