@@ -5,7 +5,8 @@
   border-radius: 50%;
   font: inherit;
   background-color: inherit;
-  fill: rgb(201, 201, 201);
+  /* fill: rgb(201, 201, 201); */
+  color: rgb(201, 201, 201);
   cursor: pointer;
 
   display: inline-flex;
@@ -13,7 +14,12 @@
   justify-content: center;
 }
 
-.IconButton:hover,
+/* .IconButton:hover,
 .IconButton:focus {
   fill: black;
+} */
+
+.IconButton:hover svg,
+.IconButton:focus svg {
+  color: black;
 }
