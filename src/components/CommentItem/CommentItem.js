@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { useQueryClient } from 'react-query';
 import { useDeleteComment } from 'cache/react-query';
 import { cache } from 'cache/react-query';
@@ -53,4 +54,4 @@ const CommentItem = function ({ _id, name, comment }) {
   );
 };
 
-export default CommentItem;
+export default memo(CommentItem);
